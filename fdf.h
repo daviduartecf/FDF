@@ -6,7 +6,7 @@
 /*   By: daduarte <daduarte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 09:59:14 by daduarte          #+#    #+#             */
-/*   Updated: 2024/05/21 16:33:07 by daduarte         ###   ########.fr       */
+/*   Updated: 2024/05/24 17:22:50 by daduarte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_point
 {
 	int	x;
 	int	y;
+	int	z;
 }	t_point;
 
 typedef struct s_points
@@ -64,14 +65,24 @@ typedef struct	s_mlx_data {
 	int	offy;
 	int height;
 	int width;
+	double degrees;
+	t_map *map;
+	int	rotation_axis;
+	double angle_x;
+	double angle_y;
+	double angle_z;
+	int is_dragging;
+	int last_x;
+	int last_y;
+	int last_z;
 }				t_mlx_data;
 
 int	**read_map_lines(char *filename, t_map *map);
 t_map	*read_map(char *filename);
 char	**ft_split(char const *s, char c);
 
-# define HEIGHT 500
-# define WIDTH 500
+# define HEIGHT 1000
+# define WIDTH 1000
 # define IMG_HEIGHT 250
 # define IMG_WIDTH 250
 

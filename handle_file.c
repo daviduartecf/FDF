@@ -79,7 +79,7 @@ int	**atoi_loop(char **strings, int width, int height)
 	j = 0;
 	k = 0;
 	map = allocate_map(width, height);
-	while (i < height - 1)
+	while (i < height)
 	{
 		k = 0;
 		while (k < width)
@@ -103,8 +103,9 @@ int	get_map_dimensions(char *filename, int *width, int *height)
 		return (-1);
 	line = get_next_line(fd);
 	if (!line)
-		return (0);
-	*width = (ft_strlen(line)/2); // \n char doesnt count
+		return (-1);
+	*width = ((ft_strlen(line))/2); // \n char doesnt count, /2 because of the ' '
+	printf("width;;; %d\n", ft_strlen(line));
 	*height = 0;
 	while (line)
 	{
@@ -210,7 +211,7 @@ t_map	*read_map(char *filename)
 	printf("Width: %d\n", map->width);
 	printf("Height: %d\n", map->height);
 	while (i < map->height)
-	{
+	{- z
 		j = 0;
 		while (j < map->width)
 		{
