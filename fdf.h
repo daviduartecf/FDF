@@ -6,7 +6,7 @@
 /*   By: daduarte <daduarte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 09:59:14 by daduarte          #+#    #+#             */
-/*   Updated: 2024/05/24 17:22:50 by daduarte         ###   ########.fr       */
+/*   Updated: 2024/05/27 13:18:17 by daduarte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,24 @@
 #ifndef M_PI
 # define M_PI 3.14159265358979323846
 #endif
+
+typedef struct s_boundries
+{
+	int	max_x;
+	int	max_y;
+	int	min_x;
+	int	min_y;
+}	t_boundries;
+
+typedef struct s_line
+{
+	int	sx;
+	int	sy;
+	int	dx;
+	int	dy;
+	int	e;
+	int	e2;
+}	t_line;
 
 typedef struct s_img
 {

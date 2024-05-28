@@ -93,6 +93,25 @@ int	**atoi_loop(char **strings, int width, int height)
 	return (map);
 }
 
+int	map_width(char *line)
+{
+	int	i;
+	int	width;
+
+	i = 0;
+	width = 0;
+	while (line[i])
+	{
+		while (line[i] >= '0' && line[i] <= '9')
+			i++;
+		width ++;
+		if (line[i] == '\n')
+			break;
+		i ++;
+	}
+	return width;
+}
+
 int	get_map_dimensions(char *filename, int *width, int *height)
 {
 	int	fd;
@@ -104,8 +123,8 @@ int	get_map_dimensions(char *filename, int *width, int *height)
 	line = get_next_line(fd);
 	if (!line)
 		return (-1);
-	*width = ((ft_strlen(line))/2); // \n char doesnt count, /2 because of the ' '
-	printf("width;;; %d\n", ft_strlen(line));
+	*width = map_width(line);
+	printf("WIDTH: %d\n", *width);
 	*height = 0;
 	while (line)
 	{
@@ -135,11 +154,40 @@ void free_map(t_map *map)
 	}
 }
 
+char	*copy_map(int fd, t_map *map)
+{
+	int	i;
+	char	*line;
+	char	*big_string;
+
+	i = 0;
+	big_string = ft_calloc(1, 1);
+	while (i < map->height)
+	{
+		line = get_next_line(fd);
+		if (!line)
+		{
+			close(fd);
+			return(NULL);
+		}
+		if (map_width(line) != map->width)
+		{
+			printf("WRONG MAP\n");
+			return (NULL);
+		}
+		if (line[ft_strlen(line) - 1] == '\n')
+			line[ft_strlen(line) - 1] = ' ';
+		big_string = ft_strjoin(big_string, line);
+		free(line);
+		i++;
+	}
+	return (big_string);
+}
+
 int	**read_map_lines(char *filename, t_map *map)
 {
 	int	fd;
 	int	i;
-	int	j;
 	char	*line;
 	char	*big_string;
 	char	**split_res;
@@ -148,22 +196,9 @@ int	**read_map_lines(char *filename, t_map *map)
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
 		return (NULL);
-	big_string = ft_calloc(1, 1);
-	while (i < map->height)
-	{
-		j = 0;
-		line = get_next_line(fd);
-		if (!line)
-		{
-			close(fd);
-			return(NULL);
-		}
-		if (line[ft_strlen(line) - 1] == '\n')
-			line[ft_strlen(line) - 1] = ' ';
-		big_string = ft_strjoin(big_string, line);
-		free(line);
-		i++;
-	}
+	big_string = copy_map(fd, map);
+	if (!big_string)
+		return (NULL);
 	split_res = ft_split(big_string, ' ');
 	map->map = atoi_loop(split_res, map->width, map->height);
 	close(fd);
