@@ -6,7 +6,7 @@
 /*   By: daduarte <daduarte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 09:59:14 by daduarte          #+#    #+#             */
-/*   Updated: 2024/05/27 13:18:17 by daduarte         ###   ########.fr       */
+/*   Updated: 2024/05/30 14:38:09 by daduarte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,10 @@ typedef struct	s_mlx_data {
 	int last_x;
 	int last_y;
 	int last_z;
+	int	rotate;
+	int	first_call;
+	double	scale;
+	t_boundries	*boundries;
 }				t_mlx_data;
 
 int	**read_map_lines(char *filename, t_map *map);
@@ -101,7 +105,8 @@ char	**ft_split(char const *s, char c);
 
 # define HEIGHT 1000
 # define WIDTH 1000
-# define IMG_HEIGHT 250
-# define IMG_WIDTH 250
+# define MOUSE_SCROLL_UP 4
+# define MOUSE_SCROLL_DOWN 5
+# define GRID_SIZE 20
 
 #endif

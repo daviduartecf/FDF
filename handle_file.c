@@ -1,4 +1,6 @@
 #include "fdf.h"
+#include "tester.h"
+#include "gnl/get_next_line.h"
 
 int **allocate_map(int width, int height)
 {
@@ -95,12 +97,16 @@ int	**atoi_loop(char **strings, int width, int height)
 
 int	map_width(char *line)
 {
-	int	i;
 	int	width;
+	char	**split_result;
 
-	i = 0;
 	width = 0;
-	while (line[i])
+	split_result = ft_split(line, ' ');
+	if (!split_result)
+		return (0);
+	while (split_result[width])
+		width ++;
+	/* while (line[i])
 	{
 		while (line[i] >= '0' && line[i] <= '9')
 			i++;
@@ -108,7 +114,7 @@ int	map_width(char *line)
 		if (line[i] == '\n')
 			break;
 		i ++;
-	}
+	} */
 	return width;
 }
 
@@ -124,7 +130,7 @@ int	get_map_dimensions(char *filename, int *width, int *height)
 	if (!line)
 		return (-1);
 	*width = map_width(line);
-	printf("WIDTH: %d\n", *width);
+	//printf("WIDTH: %d\n", *width);
 	*height = 0;
 	while (line)
 	{
@@ -172,7 +178,7 @@ char	*copy_map(int fd, t_map *map)
 		}
 		if (map_width(line) != map->width)
 		{
-			printf("WRONG MAP\n");
+			printf("MAP WIDTH IS NOT THE SAME IN EVERY LINE\n");
 			return (NULL);
 		}
 		if (line[ft_strlen(line) - 1] == '\n')
@@ -237,7 +243,7 @@ t_map	*read_map(char *filename)
 	int	i = 0, j;
 	t_map *map;
 
-	map = read_map("map.txt");
+	map = read_map("my_maps/2x2map.txt");
 	if (!map)
 	{
 		printf("ERROR");
@@ -246,7 +252,7 @@ t_map	*read_map(char *filename)
 	printf("Width: %d\n", map->width);
 	printf("Height: %d\n", map->height);
 	while (i < map->height)
-	{- z
+	{
 		j = 0;
 		while (j < map->width)
 		{
@@ -256,5 +262,4 @@ t_map	*read_map(char *filename)
 		printf("\n");
 		i ++;
 	}
-}
- */
+} */
