@@ -1,5 +1,5 @@
 #include "fdf.h"
-#include "tester.h"
+#include "mytester/tester.h"
 #include "gnl/get_next_line.h"
 
 int **allocate_map(int width, int height)
@@ -190,6 +190,38 @@ char	*copy_map(int fd, t_map *map)
 	return (big_string);
 }
 
+int	ft_is_number(char *number)
+{
+	int	i;
+
+	i = 0;
+	if (number[0]== '-')
+			i ++;
+	while (number[i])
+	{
+		if (number[i] > '9' || number[i] < '0')
+				return (0);
+		i ++;
+	}
+	return (1);
+}
+
+int	ft_is_map_valid(char **map)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (map[i])
+	{
+		if (!ft_is_number(map[i]))
+			return (0);
+		i ++;
+	}
+	return (1);
+}
+
 int	**read_map_lines(char *filename, t_map *map)
 {
 	int	fd;
@@ -206,6 +238,8 @@ int	**read_map_lines(char *filename, t_map *map)
 	if (!big_string)
 		return (NULL);
 	split_res = ft_split(big_string, ' ');
+	if (!ft_is_map_valid(split_res))
+		return (NULL);
 	map->map = atoi_loop(split_res, map->width, map->height);
 	close(fd);
 	return (map->map);

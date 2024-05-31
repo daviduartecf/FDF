@@ -1,0 +1,4 @@
+random char in map
+@ # $ %
+" | _ {}
+[ s < .

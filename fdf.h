@@ -103,8 +103,8 @@ int	**read_map_lines(char *filename, t_map *map);
 t_map	*read_map(char *filename);
 char	**ft_split(char const *s, char c);
 
-# define HEIGHT 1000
-# define WIDTH 1000
+# define HEIGHT 750
+# define WIDTH 750
 # define MOUSE_SCROLL_UP 4
 # define MOUSE_SCROLL_DOWN 5
 # define GRID_SIZE 20

@@ -288,7 +288,7 @@ void	draw_map(t_mlx_data *data, t_map *map)
 	//draw_grid(data);
 	data->offx = 0;
 	data->offy = 0;
-	draw_isometric_grid(data, WIDTH, HEIGHT, 100);
+	//draw_isometric_grid(data, WIDTH, HEIGHT, 100);
 	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
 		data->img.img_ptr, 0, 0);
 	data->first_call = 1;
@@ -418,8 +418,9 @@ int	main(void)
 	t_mlx_data	data;
 	t_map		*map;
 
-	map = read_map("test_maps/pylone.fdf");
-	//map = read_map("map.txt");
+	//map = read_map("test_maps/pylone.fdf");
+	//map = read_map("david.txt");
+	map = read_map("test_maps/mars.fdf");
 	if (!map)
 	{
 		printf("ERROR");
