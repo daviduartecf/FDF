@@ -1,4 +1,4 @@
-CC = cc
+CC = cc -g
 NAME = program
 LIBX = minilibx-linux/libmlx.a
 FLAGS = -Lmlx_linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz

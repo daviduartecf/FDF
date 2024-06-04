@@ -6,7 +6,7 @@
 /*   By: daduarte <daduarte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 09:59:14 by daduarte          #+#    #+#             */
-/*   Updated: 2024/05/30 14:38:09 by daduarte         ###   ########.fr       */
+/*   Updated: 2024/06/04 13:26:36 by daduarte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,26 @@ typedef struct s_img
 	int	line_len;
 }	t_img;
 
+typedef struct s_pt
+{
+	int	z;
+	int	color;
+}	t_pt;
+
 typedef struct s_map
 {
-	int	**map;
+	t_pt	**map;
 	int	height;
 	int	width;
 }	t_map;
+
+typedef struct		s_coord
+{
+	int	x;
+	int	y;
+	int	z;
+	int	color;
+}	t_coord;
 
 typedef struct s_point
 {
@@ -96,10 +110,17 @@ typedef struct	s_mlx_data {
 	int	rotate;
 	int	first_call;
 	double	scale;
+	int	color1;
+	int	color2;
+	int	color;
+	int	max_z;
+	int	min_z;
+	int	boundries_check;
+	t_coord **grid;
 	t_boundries	*boundries;
 }				t_mlx_data;
 
-int	**read_map_lines(char *filename, t_map *map);
+t_pt	**read_map_lines(char *filename, t_map *map);
 t_map	*read_map(char *filename);
 char	**ft_split(char const *s, char c);
 
@@ -108,5 +129,10 @@ char	**ft_split(char const *s, char c);
 # define MOUSE_SCROLL_UP 4
 # define MOUSE_SCROLL_DOWN 5
 # define GRID_SIZE 20
+
+# define R(a) (a) >> 16
+# define G(a) ((a) >> 8) & 0xFF
+# define B(a) (a) & 0xFF
+# define RGB(a, b, c) ((a) << 16) + ((b) << 8) + (c)
 
 #endif

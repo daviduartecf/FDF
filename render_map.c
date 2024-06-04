@@ -6,7 +6,7 @@
 /*   By: daduarte <daduarte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 13:10:41 by daduarte          #+#    #+#             */
-/*   Updated: 2024/05/30 18:27:24 by daduarte         ###   ########.fr       */
+/*   Updated: 2024/06/04 17:46:02 by daduarte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ Rz(angle) = {cos(angle, -sin(angle, 0))}
 			{sin(angle, cos(angle, 0))}
 			{0, 0, 1}*/
 
-void	rotate_x(t_point *p, double angle)
+void	rotate_x(t_coord *p, double angle)
 {
 	int	tmp_y;
 
@@ -37,7 +37,7 @@ void	rotate_x(t_point *p, double angle)
 	p->z = (int)(tmp_y * sin(angle) + p->z * cos(angle));
 }
 
-void	rotate_y(t_point *p, double angle)
+void	rotate_y(t_coord *p, double angle)
 {
 	int	tmp_x;
 
@@ -46,7 +46,7 @@ void	rotate_y(t_point *p, double angle)
 	p->z = (int)(-tmp_x * sin(angle) + p->z * cos(angle));
 }
 
-void	rotate_z(t_point *p, double angle)
+void	rotate_z(t_coord *p, double angle)
 {
 	int	tmp_x;
 
@@ -55,7 +55,7 @@ void	rotate_z(t_point *p, double angle)
 	p->y = (int)(tmp_x * sin(angle) + p->y * cos(angle));
 }
 
-t_point	project_point(int x, int y, int z, t_mlx_data *data)
+/* t_point	project_point(int x, int y, int z, t_mlx_data *data)
 {
 	t_point	point;
 	double	angle_x;
@@ -74,6 +74,52 @@ t_point	project_point(int x, int y, int z, t_mlx_data *data)
 	point.x += data->offx;
 	point.y += data->offy;
 	return (point);
+} */
+
+int		gradient(int startcolor, int endcolor, int len, int pos)
+{
+	float	factor[3];
+	int		new[3];
+	int		newcolor;
+
+	factor[0] = (float)((R(endcolor)) - (R(startcolor))) / (float)len;
+	factor[1] = (float)((G(endcolor)) - (G(startcolor))) / (float)len;
+	factor[2] = (float)((B(endcolor)) - (B(startcolor))) / (float)len;
+	new[0] = (R(startcolor)) + (pos * factor[0]);
+	new[1] = (G(startcolor)) + (pos * factor[1]);
+	new[2] = (B(startcolor)) + (pos * factor[2]);
+	newcolor = RGB(new[0], new[1], new[2]);
+	return (newcolor);
+}
+
+t_coord	project_point(int x, int y, int z, t_mlx_data *data)
+{
+	t_coord	point;
+	double	angle_x;
+	double	angle_y;
+	double	angle_z;
+	int	color;
+	int xx, yy;
+	int	len = data->max_z - data->min_z;
+
+	point.x = (int)(x * data->scale);
+	point.y = (int)(y * data->scale);
+	point.z = (int)(z * data->scale);
+	angle_x = data->angle_x * M_PI / 180;
+	angle_y = data->angle_y * M_PI / 180;
+	angle_z = data->angle_z * M_PI / 180;
+	rotate_x(&point, angle_x);
+	rotate_y(&point, angle_y);
+	rotate_z(&point, angle_z);
+	point.x += data->offx;
+	point.y += data->offy;
+	if (data->boundries_check == 0)
+	{
+		xx = x / 20;
+		yy = y / 20;
+		point.color = gradient(data->color1, data->color2, len, abs(data->map->map[y/20][x/20].z));
+	}
+	return (point);
 }
 
 void	put_pixel_to_image(t_img *img, int x, int y, int color)
@@ -90,18 +136,19 @@ void	put_pixel_to_image(t_img *img, int x, int y, int color)
 
 void	set_boundries(t_boundries *boundries, t_mlx_data *data, int x, int y)
 {
-	t_point	point;
+	t_coord	point;
 	t_point	point2;
 
 	point2.x = 0;
 	point2.y = 0;
+	data->boundries_check = 1;
 	while (point2.y < (data->map->height * 20))
 	{
 		x = 0;
 		point2.x = 0;
 		while (point2.x < (data->map->width * 20))
 		{
-			point = project_point(point2.x, point2.y, data->map->map[y][x], data);
+			point = project_point(point2.x, point2.y, data->map->map[y][x].z, data);
 			if (point.x > boundries->max_x)
 				boundries->max_x = point.x;
 			if (point.y > boundries->max_y)
@@ -116,6 +163,7 @@ void	set_boundries(t_boundries *boundries, t_mlx_data *data, int x, int y)
 		y ++;
 		point2.y += 20;
 	}
+	data->boundries_check = 0;
 }
 
 void	calculate_boundries(t_boundries *boundries, t_mlx_data *data)
@@ -134,11 +182,42 @@ void	calculate_boundries(t_boundries *boundries, t_mlx_data *data)
 	printf("max_x: %d\n", boundries->max_x);
 }
 
-void	draw_to_image(t_mlx_data *data, t_point p0, t_point p1, t_line line)
+int	get_steps(t_mlx_data data, t_coord p0, t_coord p1, t_line line)
 {
+	int	steps;
+
+	steps = 0;
 	while (1)
 	{
-		put_pixel_to_image(&data->img, p0.x, p0.y, 0xfffff00);
+		if (p0.x == p1.x && p0.y == p1.y)
+			break ;
+		line.e2 = 2 * line.e;
+		if (line.e2 > -line.dy)
+		{
+			line.e -= line.dy;
+			p0.x += line.sx;
+		}
+		if (line.e2 < line.dx)
+		{
+			line.e += line.dx;
+			p0.y += line.sy;
+		}
+		steps ++;
+	}
+	return (steps);
+}
+
+void	draw_to_image(t_mlx_data *data, t_coord p0, t_coord p1, t_line line, t_point p, int steps)
+{
+	int	color;
+	int	k;
+
+	k = 0;
+	while (1)
+	{
+		color = gradient(p0.color, p1.color, steps, k);
+		k ++;
+		put_pixel_to_image(&data->img, p0.x, p0.y, color);
 		if (p0.x == p1.x && p0.y == p1.y)
 			break ;
 		line.e2 = 2 * line.e;
@@ -155,9 +234,10 @@ void	draw_to_image(t_mlx_data *data, t_point p0, t_point p1, t_line line)
 	}
 }
 
-void	draw_line(t_mlx_data *data, t_point p0, t_point p1)
+void	draw_line(t_mlx_data *data, t_coord p0, t_coord p1, t_point p)
 {
 	t_line	line;
+	int	steps;
 
 	if (p0.x < p1.x)
 		line.sx = 1;
@@ -170,48 +250,60 @@ void	draw_line(t_mlx_data *data, t_point p0, t_point p1)
 	line.dx = abs(p1.x - p0.x);
 	line.dy = abs(p1.y - p0.y);
 	line.e = line.dx - line.dy;
-	draw_to_image(data, p0, p1, line);
+	steps = get_steps(*data, p0, p1, line);
+	draw_to_image(data, p0, p1, line, p, steps);
 }
 
-void	draw_grid(t_mlx_data *data)
+void	get_min_max_altitude(t_map *map, int *min_z, int *max_z)
 {
-	t_point p0, p1, p2, p3;
+	int	y;
+	int	x;
 
-	p0.x = 0;
-	p0.y = HEIGHT/2;
-	p1.x = WIDTH;
-	p1.y = HEIGHT/2;
-	p2.x = WIDTH/2;
-	p2.y = 0;
-	p3.x = WIDTH/2;
-	p3.y = HEIGHT;
-	draw_line(data, p0, p1);
-	draw_line(data, p2, p3);
-	//draw_line(data, WIDTH/2, 0, WIDTH/2, HEIGHT);
-	//draw_line(data, 0, HEIGHT/2, WIDTH, HEIGHT/2);
-	//draw_line(data, WIDTH, 0, 0, HEIGHT);
+	*min_z = INT_MAX;
+	*max_z = INT_MIN;
+	y = 0;
+	while (y < map->height)
+	{
+		x = 0;
+		while (x < map->width)
+		{
+			if (map->map[y][x].z < *min_z)
+				*min_z = map->map[y][x].z;
+			if (map->map[y][x].z > *max_z)
+				*max_z = map->map[y][x].z;
+			x ++;
+		}
+		y ++;
+	}
 }
 
-void	draw_loop(t_mlx_data *data, t_point p, t_point i, t_point p1)
+void	draw_loop(t_mlx_data *data)
 {
-	t_point	p0;
+	t_coord	p0;
+	t_coord	p1;
+	t_point	i, p;
 
+	p.x = 0;
+	p.y = 0;
+	i.x = 0;
+	i.y = 0;
+	printf("width: %d\n", data->map->width);
 	while (i.y < (((data->map->height) * 20)))
 	{
 		p.x = 0;
 		i.x = 0;
 		while (i.x < (((data->map->width) * 20)))
 		{
-			p0 = project_point(i.x, i.y, data->map->map[p.y][p.x], data);
-			if (i.x + 20 < (((data->map->width) * 20)))
+			p0 = project_point(i.x, i.y, data->map->map[p.y][p.x].z, data);
+			if (p.x + 1 < (((data->map->width))))
 			{
-				p1 = project_point(i.x + 20, i.y, data->map->map[p.y][p.x + 1], data);
-				draw_line(data, p0, p1);
+				p1 = project_point(i.x + 20, i.y, data->map->map[p.y][p.x + 1].z, data);
+				draw_line(data, p0, p1, p);
 			}
-			if (i.y + 20 < (((data->map->height) * 20)))
+			if (p.y + 1 < (((data->map->height))))
 			{
-				p1 = project_point(i.x, i.y + 20, data->map->map[p.y + 1][p.x], data);
-				draw_line(data, p0, p1);
+				p1 = project_point(i.x, i.y + 20, data->map->map[p.y + 1][p.x].z, data);
+				draw_line(data, p0, p1, p);
 			}
 			p.x ++;
 			i.x += 20;
@@ -219,52 +311,6 @@ void	draw_loop(t_mlx_data *data, t_point p, t_point i, t_point p1)
 		p.y ++;
 		i.y += 20;
 	}
-}
-
-void draw_isometric_grid(t_mlx_data *data, int grid_width, int grid_height, int grid_size) {
-    int x, y, yp;
-    //int iso_x1, iso_y1, iso_x2, iso_y2;
-	t_point p0;
-	t_point p1;
-    double theta = M_PI / 6;  // 30 degrees
-	double slope = 1.0 / sqrt(3);
-
-/*     // Drawing the horizontal lines
-    for (y = -100; y <= grid_height; y++) {
-        for (x = 0; x < grid_width; x++) {
-            // Calculate isometric coordinates for start and end of the line
-            p0.x = (x - y) * cos(theta) * grid_size;
-            p0.y = (x + y) * sin(theta) * grid_size;
-            p1.x = ((x + 1) - y) * cos(theta) * grid_size;
-            p1.y = ((x + 1) + y) * sin(theta) * grid_size;
-
-            draw_line(data, p0, p1);
-        }
-    } */
-	yp = (HEIGHT/2) - ((WIDTH/2)*slope);
-	p0.x = 0;
-	p0.y = (yp);
-	p1.x = (WIDTH);
-	p1.y = (int)(slope * WIDTH + yp);
-	draw_line(data, p0, p1);
-	yp = (HEIGHT/2) - ((WIDTH/2)*slope);
-	p0.x = (WIDTH);
-	p0.y = (yp);
-	p1.x = (0);
-	p1.y = (int)(slope * WIDTH + yp);
-	draw_line(data, p0, p1);
-   /*  // Drawing the vertical lines
-    for (x = 0; x <= grid_width; x++) {
-        for (y = -100; y < grid_height; y++) {
-            // Calculate isometric coordinates for start and end of the line
-            p0.x = (x - y) * cos(theta) * grid_size;
-            p0.y = (x + y) * sin(theta) * grid_size;
-            p1.x = (x - (y + 1)) * cos(theta) * grid_size;
-            p1.y = (x + (y + 1)) * sin(theta) * grid_size;
-
-            draw_line(data, p0, p1);
-        }
-    } */
 }
 
 void	draw_map(t_mlx_data *data, t_map *map)
@@ -280,15 +326,16 @@ void	draw_map(t_mlx_data *data, t_map *map)
 	index.y = 0;
 	//calculate offset based on dimensions of rotated grid
 	calculate_boundries(&boundries, data);
+	get_min_max_altitude(map, &data->min_z, &data->max_z);
 	data->offx = (WIDTH - (boundries.max_x - boundries.min_x))
 		/ 2 - boundries.min_x;
 	data->offy = (HEIGHT - (boundries.max_y - boundries.min_y))
 		/ 2 - boundries.min_y;
-	draw_loop(data, point, index, p1);
+	//draw_loop(data, point, index);
 	//draw_grid(data);
+	draw_loop(data);
 	data->offx = 0;
 	data->offy = 0;
-	draw_isometric_grid(data, WIDTH, HEIGHT, 100);
 	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
 		data->img.img_ptr, 0, 0);
 	data->first_call = 1;
@@ -418,8 +465,9 @@ int	main(void)
 	t_mlx_data	data;
 	t_map		*map;
 
+	//map = read_map("test_maps/mars.fdf");
 	map = read_map("test_maps/pylone.fdf");
-	//map = read_map("map.txt");
+	//map = read_map("map2.txt");
 	if (!map)
 	{
 		printf("ERROR");
@@ -432,13 +480,15 @@ int	main(void)
 	data.width = map->width;
 	data.offx = 0;
 	data.offy = 0;
-	data.angle_x = 40;
-	data.angle_y = -45;
+	data.angle_x = 45;
+	data.angle_y = -35;
 	data.angle_z = 30;
 	data.is_dragging = 0;
 	data.rotate = 0;
 	data.first_call = 0;
 	data.scale = 1.0;
+	data.color1 = 0xFFFFFF;
+	data.color2 = 0xFF0000;
 	data.img.img_ptr = mlx_new_image(data.mlx_ptr, WIDTH, HEIGHT);
 	data.img.img_pixels_ptr = mlx_get_data_addr(data.img.img_ptr,
 			&data.img.bits_per_pixel, &data.img.line_len, &data.img.endian);

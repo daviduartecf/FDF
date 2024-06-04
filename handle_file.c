@@ -2,9 +2,9 @@
 #include "tester.h"
 #include "gnl/get_next_line.h"
 
-int **allocate_map(int width, int height)
+t_pt **allocate_map(int width, int height)
 {
-	int	**map;
+	t_pt	**map;
 	int	i;
 	int	j;
 
@@ -15,7 +15,7 @@ int **allocate_map(int width, int height)
 		return (NULL);
 	while (i < height)
 	{
-		map[i] = malloc(width * sizeof(int));
+		map[i] = malloc(width * sizeof(t_pt));
 		if (!map[i])
 		{
 			while (j < i)
@@ -70,12 +70,12 @@ int	ft_strncmp(char *s1, char *s2)
 	return (0);
 }
 
-int	**atoi_loop(char **strings, int width, int height)
+t_pt	**atoi_loop(char **strings, int width, int height)
 {
 	int 	i;
 	int 	j;
 	int	k;
-	int	**map;
+	t_pt	**map;
 
 	i = 0;
 	j = 0;
@@ -86,7 +86,8 @@ int	**atoi_loop(char **strings, int width, int height)
 		k = 0;
 		while (k < width)
 		{
-			map[i][k] = ft_atoi(strings[j]);
+			map[i][k].z = ft_atoi(strings[j]);
+			map[i][k].color = 0xFFFFFF;
 			k ++;
 			j ++;
 		}
@@ -190,7 +191,7 @@ char	*copy_map(int fd, t_map *map)
 	return (big_string);
 }
 
-int	**read_map_lines(char *filename, t_map *map)
+t_pt	**read_map_lines(char *filename, t_map *map)
 {
 	int	fd;
 	int	i;
