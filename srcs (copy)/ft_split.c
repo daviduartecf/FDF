@@ -6,29 +6,33 @@
 /*   By: daduarte <daduarte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 11:53:54 by daduarte          #+#    #+#             */
-/*   Updated: 2024/05/21 11:29:21 by daduarte         ###   ########.fr       */
+/*   Updated: 2024/06/06 12:48:36 by daduarte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "../includes/fdf.h"
 
 static	int	count_strs(char const *s, char c)
 {
 	int	i;
 	int	count;
+	int	in_substring;
 
 	i = 0;
 	count = 0;
+	in_substring = 0;
 	while (s[i])
 	{
-		if (s[i] == c)
-			i ++;
-		else
+		if (s[i] != c && !in_substring)
 		{
+			in_substring = 1;
 			count ++;
-			while (s[i] != c && s[i])
-				i ++;
 		}
+		else if (s[i] == c)
+		{
+			in_substring = 0;
+		}
+		i ++;
 	}
 	return (count);
 }
@@ -81,7 +85,7 @@ static	char	*populate_array(char const *s, char c, int *i)
 	return (array);
 }
 
-static	void	free_array(char **array, int k)
+void	free_array(char **array, int k)
 {
 	while (k >= 0)
 	{
@@ -114,6 +118,7 @@ char	**ft_split(char const *s, char c)
 			free_array(array, k);
 			return (NULL);
 		}
+		printf("String %d read---\n", k);
 		k ++;
 	}
 	array[size] = 0;

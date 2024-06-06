@@ -6,7 +6,7 @@
 /*   By: daduarte <daduarte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 11:31:41 by daduarte          #+#    #+#             */
-/*   Updated: 2024/05/08 11:31:42 by daduarte         ###   ########.fr       */
+/*   Updated: 2024/06/06 10:36:41 by daduarte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	return (str);
 }
 
-int	ft_strchr(char *s)
+int	ft_strchr_gnl(char *s)
 {
 	int	i;
 

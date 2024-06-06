@@ -6,7 +6,7 @@
 /*   By: daduarte <daduarte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 10:15:08 by daduarte          #+#    #+#             */
-/*   Updated: 2024/05/10 12:25:12 by daduarte         ###   ########.fr       */
+/*   Updated: 2024/06/06 10:36:58 by daduarte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ char	*read_file(int fd, char *buffer, int bytes_read)
 		buffer = ft_strjoin(buffer, small_buff);
 		if (!buffer)
 			return (NULL);
-		if (ft_strchr(buffer))
+		if (ft_strchr_gnl(buffer))
 			break ;
 	}
 	free(small_buff);
