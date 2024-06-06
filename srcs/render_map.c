@@ -6,7 +6,7 @@
 /*   By: daduarte <daduarte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 13:10:41 by daduarte          #+#    #+#             */
-/*   Updated: 2024/06/06 17:42:16 by daduarte         ###   ########.fr       */
+/*   Updated: 2024/06/06 17:57:25 by daduarte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,9 +185,39 @@ int	close_win(t_mlx_data *data)
 	exit(0);
 }
 
-int	main(int argc, char *argv[])
+void	data_init(t_mlx_data *data, t_map *map)
 {
 	t_boundries	*boundries;
+
+	data->map = map;
+	data->mlx_ptr = mlx_init();
+	data->win_ptr = mlx_new_window(data->mlx_ptr, WIDTH, HEIGHT, "FDF PRO");
+	data->height = map->height;
+	data->width = map->width;
+	data->offx = 0;
+	data->offy = 0;
+	data->angle_x = 45;
+	data->angle_y = -35;
+	data->angle_z = 30;
+	data->is_dragging = 0;
+	data->rotate = 0;
+	data->first_call = 0;
+	data->scale = 1.0;
+	data->color1 = 0xFFFFFF;
+	data->color2 = 0xFF0000;
+	boundries = malloc(sizeof(t_boundries));
+	if (!boundries)
+		return ;
+	boundries->max_x = 0;
+	boundries->max_y = 0;
+	boundries->min_x = 0;
+	boundries->min_y = 0;
+	data->boundries = boundries;
+}
+
+int	main(int argc, char *argv[])
+{
+
 	t_mlx_data	data;
 	t_map		*map;
 
@@ -200,30 +230,7 @@ int	main(int argc, char *argv[])
 			printf("No file or no permission!");
 			return (0);
 		}
-		data.map = map;
-		data.mlx_ptr = mlx_init();
-		data.win_ptr = mlx_new_window(data.mlx_ptr, WIDTH, HEIGHT, "FDF PRO");
-		data.height = map->height;
-		data.width = map->width;
-		data.offx = 0;
-		data.offy = 0;
-		data.angle_x = 45;
-		data.angle_y = -35;
-		data.angle_z = 30;
-		data.is_dragging = 0;
-		data.rotate = 0;
-		data.first_call = 0;
-		data.scale = 1.0;
-		data.color1 = 0xFFFFFF;
-		data.color2 = 0xFF0000;
-		boundries = malloc(sizeof(t_boundries));
-		if (!boundries)
-			return (-1);
-		boundries->max_x = 0;
-		boundries->max_y = 0;
-		boundries->min_x = 0;
-		boundries->min_y = 0;
-		data.boundries = boundries;
+		data_init(&data, map);
 		data.img.img_ptr = mlx_new_image(data.mlx_ptr, WIDTH, HEIGHT);
 		data.img.img_pixels_ptr = mlx_get_data_addr(data.img.img_ptr,
 				&data.img.bits_per_pixel, &data.img.line_len, &data.img.endian);
