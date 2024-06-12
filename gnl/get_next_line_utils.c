@@ -6,14 +6,14 @@
 /*   By: daduarte <daduarte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 11:31:41 by daduarte          #+#    #+#             */
-/*   Updated: 2024/06/06 10:36:41 by daduarte         ###   ########.fr       */
+/*   Updated: 2024/06/11 18:58:43 by daduarte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
 int		ft_strlen(char *s);
-int		ft_strchr(char *s);
+int		ft_strchr_gnl(char *s);
 char	*ft_strjoin(char *s1, char *s2);
 void	*ft_calloc(size_t nmemb, size_t size);
 

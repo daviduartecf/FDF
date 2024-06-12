@@ -6,7 +6,7 @@
 /*   By: daduarte <daduarte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 11:53:54 by daduarte          #+#    #+#             */
-/*   Updated: 2024/06/06 17:05:48 by daduarte         ###   ########.fr       */
+/*   Updated: 2024/06/11 13:09:03 by daduarte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,30 +85,19 @@ static	char	*populate_array(char const *s, char c, int *i)
 	return (array);
 }
 
-void	free_array(char **array, int k)
-{
-	while (k >= 0)
-	{
-		free(array[k]);
-		k --;
-	}
-	free(array);
-}
-
 char	**ft_split(char const *s, char c, int *width)
 {
 	int		i;
 	int		k;
-	int		size;
 	char	**array;
 
 	i = 0;
 	k = 0;
-	size = count_strs(s, c);
-	array = malloc((size + 1) * sizeof(char *));
+	*width = count_strs(s, c);
+	array = malloc((*width + 1) * sizeof(char *));
 	if (!array)
 		return (NULL);
-	while (k < size)
+	while (k < *width)
 	{
 		while (s[i] == c)
 			i++;
@@ -120,7 +109,6 @@ char	**ft_split(char const *s, char c, int *width)
 		}
 		k ++;
 	}
-	*width = size;
-	array[size] = 0;
+	array[*width] = 0;
 	return (array);
 }

@@ -6,7 +6,7 @@
 /*   By: daduarte <daduarte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 13:13:53 by daduarte          #+#    #+#             */
-/*   Updated: 2024/06/06 13:17:50 by daduarte         ###   ########.fr       */
+/*   Updated: 2024/06/11 15:37:47 by daduarte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@ char	*ft_strchr(char *s, int c)
 
 int	get_digit(char c)
 {
-	int	i;
-
 	if (c >= 'A' && c <= 'Z')
 		c += 32;
 	if (c >= '0' && c <= '9')

@@ -6,12 +6,11 @@
 /*   By: daduarte <daduarte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 13:10:30 by daduarte          #+#    #+#             */
-/*   Updated: 2024/06/06 17:46:11 by daduarte         ###   ########.fr       */
+/*   Updated: 2024/06/12 12:11:07 by daduarte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/fdf.h"
-#include "../tester.h"
 
 t_pt	**allocate_map(int *width, int height)
 {
@@ -46,7 +45,6 @@ int	get_map_dimensions(char *filename, int *width, int *height, char ***big_str)
 {
 	int		fd;
 	char	*line;
-	int		false_height;
 
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
@@ -58,7 +56,6 @@ int	get_map_dimensions(char *filename, int *width, int *height, char ***big_str)
 	while (line)
 	{
 		(width)[*height] = map_width(line, big_str);
-		printf("LINE %d WIDTH: %d---\n", *height, width[*height]);
 		*height += 1;
 		free(line);
 		line = get_next_line(fd);
@@ -99,18 +96,24 @@ char	*copy_map(int fd, t_map *map)
 t_pt	**read_map_lines(char *filename, t_map *map, char **big_str)
 {
 	int		i;
+	int		j;
+	int		len;
 	int		fd;
-	char	*line;
-	char	**split_res;
 
 	i = 0;
+	j = 0;
+	len = 0;
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
 		return (NULL);
+	while (j < map->height)
+	{
+		len += (map->width[j]);
+		j ++;
+	}
 	map->map = atoi_loop(big_str, map->width, map->height, &map->color_flag);
 	close(fd);
-
-	while (i < map->height)
+	while (i < len)
 	{
 		free(big_str[i]);
 		i ++;
@@ -125,30 +128,24 @@ t_map	*read_map(char *filename)
 	t_map	*map;
 	int		height;
 	char	**big_str;
-	int		width[1024] = {0};
+	int		width[1024];
 
-	big_str = malloc(sizeof(char *));
+	initialize_array(width, 1024);
+	big_str = calloc(1, sizeof(char *));
 	if (!big_str)
 		return (NULL);
 	i = 0;
 	if (get_map_dimensions(filename, width, &height, &big_str) < 0)
-		return (NULL);
+		return (return_null(NULL, big_str, 4));
 	map = malloc(sizeof(t_map));
 	if (!map)
-		return (NULL);
-	map->color_flag = 0;
-	map->height = height;
-	map->width = malloc(height * sizeof(int));
+		return (return_null(NULL, big_str, 3));
+	map_init(map, height, width);
 	if (!map->width)
-		return (NULL);
-	while (i < height)
-	{
-		map->width[i] = width[i];
-		i ++;
-	}
+		return (return_null(map, big_str, 1));
 	map->map = read_map_lines(filename, map, big_str);
 	if (!map->map)
-		return (NULL);
+		return (return_null(map, big_str, 2));
 	return (map);
 }
 

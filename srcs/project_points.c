@@ -6,7 +6,7 @@
 /*   By: daduarte <daduarte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 09:38:10 by daduarte          #+#    #+#             */
-/*   Updated: 2024/06/06 13:19:11 by daduarte         ###   ########.fr       */
+/*   Updated: 2024/06/12 11:59:09 by daduarte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,26 +55,24 @@ void	rotate_z(t_coord *p, double angle)
 
 t_coord	project_point(int x, int y, int z, t_mlx_data *data)
 {
-	int		len;
-	int		color;
-	t_coord	point;
-	double	angle_x;
-	double	angle_y;
-	double	angle_z;
+	int			len;
+	t_coord		point;
+	t_angles	angles;
 
 	len = data->max_z - data->min_z;
 	point.x = (int)(x * data->scale);
 	point.y = (int)(y * data->scale);
 	point.z = (int)(z * data->scale);
-	angle_x = data->angle_x * M_PI / 180;
-	angle_y = data->angle_y * M_PI / 180;
-	angle_z = data->angle_z * M_PI / 180;
-	rotate_x(&point, angle_x);
-	rotate_y(&point, angle_y);
-	rotate_z(&point, angle_z);
+	angles.angle_x = data->angle_x * M_PI / 180;
+	angles.angle_y = data->angle_y * M_PI / 180;
+	angles.angle_z = data->angle_z * M_PI / 180;
+	rotate_x(&point, angles.angle_x);
+	rotate_y(&point, angles.angle_y);
+	rotate_z(&point, angles.angle_z);
 	point.x += data->offx;
 	point.y += data->offy;
-	if (data->boundries_check == 0)
-		point.color = gradient(data->color1, data->color2, len, abs(data->map->map[y/20][x/20].z));
+	if (data->boundaries_check == 0)
+		point.color = gradient(data->color1, data->color2, len,
+				abs(data->map->map[y / 20][x / 20].z));
 	return (point);
 }

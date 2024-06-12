@@ -6,7 +6,7 @@
 /*   By: daduarte <daduarte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 09:41:43 by daduarte          #+#    #+#             */
-/*   Updated: 2024/06/06 15:17:42 by daduarte         ###   ########.fr       */
+/*   Updated: 2024/06/11 15:37:00 by daduarte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	get_min_max_altitude(t_map *map, int *min_z, int *max_z)
 	}
 }
 
-int	get_steps(t_mlx_data data, t_coord p0, t_coord p1, t_line line)
+int	get_steps(t_coord p0, t_coord p1, t_line line)
 {
 	int	steps;
 
