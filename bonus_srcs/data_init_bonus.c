@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   data_init.c                                        :+:      :+:    :+:   */
+/*   data_init_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: daduarte <daduarte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 12:51:53 by daduarte          #+#    #+#             */
-/*   Updated: 2024/06/12 16:19:03 by daduarte         ###   ########.fr       */
+/*   Updated: 2024/06/12 16:17:37 by daduarte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	data_init(t_mlx_data *data, t_map *map)
 	data->width = map->width;
 	data->offx = 0;
 	data->offy = 0;
-	data->z_factor = 2.5;
+	data->z_factor = 1;
 	data->angle_x = 45;
 	data->angle_y = -35;
 	data->angle_z = 30;
@@ -62,6 +62,7 @@ void	data_init(t_mlx_data *data, t_map *map)
 	data->rotate = 0;
 	data->first_call = 0;
 	data->no_scale = 1;
+	data->show_help = 0;
 	data->scale = 1.0;
 	data->color1 = 0xFFFFFF;
 	data->color2 = 0xFF0000;

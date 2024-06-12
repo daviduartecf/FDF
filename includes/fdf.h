@@ -6,29 +6,33 @@
 /*   By: daduarte <daduarte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 09:59:14 by daduarte          #+#    #+#             */
-/*   Updated: 2024/06/12 12:08:07 by daduarte         ###   ########.fr       */
+/*   Updated: 2024/06/12 17:21:01 by daduarte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FDF_H
 # define FDF_H
 
-# include "../minilibx-linux/mlx.h"
-# include <X11/keysym.h>
+# include <math.h>
 # include <X11/X.h>
-# include <stdlib.h>
 # include <stdio.h>
 # include <fcntl.h>
-# include "../gnl/get_next_line.h"
+# include <stdlib.h>
 # include <unistd.h>
-# include <math.h>
 # include <limits.h>
+# include <X11/keysym.h>
+# include "../gnl/get_next_line.h"
+# include "../minilibx-linux/mlx.h"
+# include "../ft_printf/includes/libft.h"
+# include "../ft_printf/includes/ft_printf.h"
 
-# define HEIGHT 1000
+# define HEIGHT 950
 # define WIDTH 1000
 # define MOUSE_SCROLL_UP 4
 # define MOUSE_SCROLL_DOWN 5
 # define GRID_SIZE 20
+# define Z_FACTOR 5
+# define ZOOM_FACTOR 1.05
 
 typedef struct s_boundaries
 {
@@ -131,6 +135,8 @@ typedef struct s_mlx_data
 	int				no_scale;
 	void			*mlx_ptr;
 	void			*win_ptr;
+	double			z_factor;
+	int				show_help;
 	int				max_width;
 	int				win_width;
 	int				win_height;
@@ -164,17 +170,17 @@ int		close_win(t_mlx_data *data);
 int		handle_input(int keysym, t_mlx_data *data);
 void	image_destroy_and_create(t_mlx_data *data);
 void	handle_rotate(int keysym, t_mlx_data *data);
+int		handle_z_factor(int keysym, t_mlx_data *data);
 void	handle_translate(int keysym, t_mlx_data *data);
 int		handle_mouse_move(int x, int y, t_mlx_data *data);
 int		handle_mouse_press(int button, int x, int y, t_mlx_data *data);
 int		handle_mouse_release(int button, int x, int y, t_mlx_data *data);
+int		zoom_up_down(t_mlx_data *data, double max, double min, int button);
 
 /* MISC HELPERS FUNCTIONS */
 
 int		get_digit(char c);
 int		ft_isdigit(int c);
-int		ft_atoi(char *str);
-char	*ft_strdup(char *s);
 void	free_map(t_map *map);
 int		array_len(char **arr);
 int		ft_atoibase_fdf(char *str);
@@ -182,13 +188,13 @@ void	free_array(char **array, int k);
 int		get_max_value(int *width, int height);
 void	initialize_array(int *array, int size);
 char	**ft_strarrayjoin(char **arr1, char **arr2);
+int		calculate_offset(t_mlx_data *data, int flag);
 void	ft_copy_array(char **result, char **arr1, int len);
 void	*return_null(t_map *map, char **big_str, int flag);
 
 /* READ FILES FUNCTIONS */
 
 t_map	*read_map(char *filename);
-char	*ft_strchr(char *s, int c);
 t_pt	**allocate_map(int *width, int height);
 int		map_width(char *line, char ***big_str);
 t_pt	**read_map_lines(char *filename, t_map *map, char **big_str);
@@ -224,9 +230,15 @@ void	draw_to_image(t_mlx_data *data, t_coord p0, t_coord p1, t_line line);
 void	calculate_boundaries(t_mlx_data *data);
 void	set_boundaries(t_mlx_data *data, int x, int y);
 
+/* INSTRUCTIONS FUNCTIONS */
+
+void	call_instructions(t_mlx_data *data);
+void	display_instructions(t_mlx_data *data);
+
 /* SPLIT FUNCTIONS */
 
 void	free_array(char **array, int k);
-char	**ft_split(char const *s, char c, int *width);
+char	**ft_split_fdf(char const *s, char c, int *width);
+void	overlay_images(t_mlx_data *data, int width, int height);
 
 #endif

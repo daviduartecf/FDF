@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   draw_image.c                                       :+:      :+:    :+:   */
+/*   draw_image_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: daduarte <daduarte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 09:44:24 by daduarte          #+#    #+#             */
-/*   Updated: 2024/06/12 14:13:34 by daduarte         ###   ########.fr       */
+/*   Updated: 2024/06/12 16:21:02 by daduarte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,14 +112,13 @@ void	draw_map(t_mlx_data *data, t_map *map)
 		data->scale = calculate_scale_factor(*data, WIDTH, HEIGHT);
 		data->no_scale = 0;
 	}
-	data->offx = (WIDTH - (data->boundaries->max_x - data->boundaries->min_x))
-		/ 2 - data->boundaries->min_x + data->translate_x;
-	data->offy = (HEIGHT - (data->boundaries->max_y - data->boundaries->min_y))
-		/ 2 - data->boundaries->min_y + data->translate_y;
+	data->offx = calculate_offset(data, 1);
+	data->offy = calculate_offset(data, 2);
 	draw_loop(data, index, point);
 	data->offx = 0;
 	data->offy = 0;
 	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
 		data->img.img_ptr, 0, 0);
+	call_instructions(data);
 	data->first_call = 1;
 }

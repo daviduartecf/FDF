@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   render_map.c                                       :+:      :+:    :+:   */
+/*   render_map_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: daduarte <daduarte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 13:10:41 by daduarte          #+#    #+#             */
-/*   Updated: 2024/06/12 14:46:45 by daduarte         ###   ########.fr       */
+/*   Updated: 2024/06/12 15:52:53 by daduarte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,11 @@ void	image_destroy_and_create(t_mlx_data *data)
 void	hooks_call(t_mlx_data *data)
 {
 	mlx_key_hook(data->win_ptr, handle_input, data);
+	mlx_hook(data->win_ptr, 4, 1L << 2, handle_mouse_press, data);
+	mlx_hook(data->win_ptr, 5, 1L << 3, handle_mouse_release, data);
+	mlx_hook(data->win_ptr, 6, 1L << 6, handle_mouse_move, data);
 	mlx_hook(data->win_ptr, 17, 0L, close_win, data);
+	mlx_loop_hook(data->mlx_ptr, loop_hook, data);
 	mlx_loop(data->mlx_ptr);
 }
 

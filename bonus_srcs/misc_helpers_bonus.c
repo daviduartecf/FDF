@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   misc_helpers.c                                     :+:      :+:    :+:   */
+/*   misc_helpers_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: daduarte <daduarte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 11:47:18 by daduarte          #+#    #+#             */
-/*   Updated: 2024/06/12 14:29:01 by daduarte         ###   ########.fr       */
+/*   Updated: 2024/06/12 16:24:05 by daduarte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,4 +101,18 @@ int	handle_z_factor(int keysym, t_mlx_data *data)
 			return (0);
 	}
 	return (0);
+}
+
+int	calculate_offset(t_mlx_data *data, int flag)
+{
+	int	offset;
+
+	offset = 0;
+	if (flag == 1)
+		offset = (WIDTH - (data->boundaries->max_x - data->boundaries->min_x))
+			/ 2 - data->boundaries->min_x + data->translate_x;
+	else if (flag == 2)
+		offset = (HEIGHT - (data->boundaries->max_y - data->boundaries->min_y))
+			/ 2 - data->boundaries->min_y + data->translate_y;
+	return (offset);
 }
