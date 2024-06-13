@@ -6,7 +6,7 @@
 /*   By: daduarte <daduarte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 10:15:45 by daduarte          #+#    #+#             */
-/*   Updated: 2024/05/10 12:47:19 by daduarte         ###   ########.fr       */
+/*   Updated: 2024/06/12 14:03:03 by daduarte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,9 @@ char	*get_lines(char *buffer);
 char	*read_file(int fd, char *buffer, int bytes_read);
 
 //UTILS
-int		ft_strlen(char *s);
-int		ft_strchr(char *s);
-char	*ft_strjoin(char *s1, char *s2);
+int		ft_strlen_gnl(char *s);
+int		ft_strchr_gnl(char *s);
+char	*ft_strjoin_free(char *s1, char *s2);
 void	*ft_calloc(size_t nmemb, size_t size);
 
 #endif
