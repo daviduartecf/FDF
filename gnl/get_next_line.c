@@ -6,7 +6,7 @@
 /*   By: daduarte <daduarte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 10:15:08 by daduarte          #+#    #+#             */
-/*   Updated: 2024/05/10 12:25:12 by daduarte         ###   ########.fr       */
+/*   Updated: 2024/06/12 14:02:54 by daduarte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ char	*save_str(char *buffer)
 		free(buffer);
 		return (NULL);
 	}
-	temp = malloc(sizeof(char) * (ft_strlen(buffer) - i + 1));
+	temp = malloc(sizeof(char) * (ft_strlen_gnl(buffer) - i + 1));
 	if (!temp)
 	{
 		free(buffer);
@@ -119,10 +119,10 @@ char	*read_file(int fd, char *buffer, int bytes_read)
 		if (bytes_read == 0)
 			break ;
 		small_buff[bytes_read] = 0;
-		buffer = ft_strjoin(buffer, small_buff);
+		buffer = ft_strjoin_free(buffer, small_buff);
 		if (!buffer)
 			return (NULL);
-		if (ft_strchr(buffer))
+		if (ft_strchr_gnl(buffer))
 			break ;
 	}
 	free(small_buff);

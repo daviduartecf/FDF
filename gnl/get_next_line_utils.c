@@ -6,14 +6,14 @@
 /*   By: daduarte <daduarte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 11:31:41 by daduarte          #+#    #+#             */
-/*   Updated: 2024/05/08 11:31:42 by daduarte         ###   ########.fr       */
+/*   Updated: 2024/06/12 14:03:16 by daduarte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int		ft_strlen(char *s);
-int		ft_strchr(char *s);
+int		ft_strlen_gnl(char *s);
+int		ft_strchr_gnl(char *s);
 char	*ft_strjoin(char *s1, char *s2);
 void	*ft_calloc(size_t nmemb, size_t size);
 
@@ -34,7 +34,7 @@ void	*ft_calloc(size_t nmemb, size_t size)
 	return ((char *)array);
 }
 
-char	*ft_strjoin(char *s1, char *s2)
+char	*ft_strjoin_free(char *s1, char *s2)
 {
 	char	*str;
 	int		s1len;
@@ -44,7 +44,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	if (!s2)
 		return (NULL);
 	s1len = 0;
-	s2len = ft_strlen(s2);
+	s2len = ft_strlen_gnl(s2);
 	i = -1;
 	while (s1[s1len])
 		s1len ++;
@@ -61,7 +61,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	return (str);
 }
 
-int	ft_strchr(char *s)
+int	ft_strchr_gnl(char *s)
 {
 	int	i;
 
@@ -77,7 +77,7 @@ int	ft_strchr(char *s)
 	return (0);
 }
 
-int	ft_strlen(char *s)
+int	ft_strlen_gnl(char *s)
 {
 	int	i;
 
