@@ -37,10 +37,10 @@ all: ${NAME}
 
 clean:
 	@make clean -C ${LIBFT}
+	@${RM} -f ${OBJS}
 
 fclean: clean
 	@${RM} -f ${NAME}
-	@${RM} -f ${OBJS}
 	@${RM} -f ${LIBFT}/libft.a
 
 re: fclean all

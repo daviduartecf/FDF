@@ -124,7 +124,6 @@ t_pt	**read_map_lines(char *filename, t_map *map, char **big_str)
 
 t_map	*read_map(char *filename)
 {
-	int		i;
 	t_map	*map;
 	int		height;
 	char	**big_str;
@@ -134,7 +133,6 @@ t_map	*read_map(char *filename)
 	big_str = ft_calloc(1, sizeof(char *));
 	if (!big_str)
 		return (NULL);
-	i = 0;
 	if (get_map_dimensions(filename, width, &height, &big_str) < 0)
 		return (return_null(NULL, big_str, 4));
 	map = malloc(sizeof(t_map));

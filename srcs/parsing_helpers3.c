@@ -31,10 +31,8 @@ int	get_max_value(int *width, int height)
 void	free_map(t_map *map)
 {
 	int	y;
-	int	x;
 
 	y = 0;
-	x = 0;
 	if (map)
 	{
 		while (y < map->height)

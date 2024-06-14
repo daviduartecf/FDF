@@ -22,10 +22,10 @@ all: ${NAME}
 bonus: ${BONUS}
 
 ${MLX}:
-	make --silent -C minilibx-linux
+	@make --silent -C minilibx-linux
 
 ${FT_PRINTF}:
-	make --silent -C ft_printf
+	@make --silent -C ft_printf
 
 ${NAME}: ${OBJS} ${MLX} ${FT_PRINTF}
 	@echo "\033[0;32mCompiling program...\033[0m"
@@ -42,12 +42,14 @@ ${BONUS}: ${BONUS_OBJS} ${MLX} ${FT_PRINTF}
 
 clean:
 	@rm -f ${OBJS}
+	@make --no-print-directory -C ft_printf/ fclean
 
 fclean:	clean
 	@rm ${NAME}
 
 clean_bonus:
 	@rm -f ${BONUS_OBJS}
+	@make --no-print-directory -C ft_printf/ fclean
 	
 fclean_bonus: clean_bonus
 	@rm ${BONUS}

@@ -25,36 +25,24 @@ void	rotate_instructions(t_mlx_data *data, int *y)
 {
 	*y += 15;
 	mlx_string_put(data->mlx_ptr, data->win_ptr, 18, *y,
-		0xFFFFFF, "W/S -> Rotate X axis");
-	*y += 15;
-	mlx_string_put(data->mlx_ptr, data->win_ptr, 18, *y,
-		0xFFFFFF, "A/D -> Rotate Y axis");
-	*y += 15;
-	mlx_string_put(data->mlx_ptr, data->win_ptr, 18, *y,
-		0xFFFFFF, "Q/E -> Rotate Z axis");
+		0xFFFFFF, "W/S/A/D/Q/E -> Rotate");
 }
 
 void	translate_instructions(t_mlx_data *data, int *y)
 {
 	*y += 15;
 	mlx_string_put(data->mlx_ptr, data->win_ptr, 18, *y,
-		0xFFFFFF, "Up/Down -> Translate Y");
-	*y += 15;
-	mlx_string_put(data->mlx_ptr, data->win_ptr, 18, *y,
-		0xFFFFFF, "Left/Right -> Translate X");
+		0xFFFFFF, "Arrows -> Translate");
 }
 
 void	zoom_scale_instructions(t_mlx_data *data, int *y)
 {
 	*y += 15;
 	mlx_string_put(data->mlx_ptr, data->win_ptr, 18, *y,
-		0xFFFFFF, "Wheel Up -> Zoom in");
+		0xFFFFFF, "-/+ -> Change Z scale");
 	*y += 15;
 	mlx_string_put(data->mlx_ptr, data->win_ptr, 18, *y,
-		0xFFFFFF, "Wheel Down -> Zoom out");
-	*y += 15;
-	mlx_string_put(data->mlx_ptr, data->win_ptr, 18, *y,
-		0xFFFFFF, "-/+ -> Change altitude scale");
+		0xFFFFFF, "Wheel Up/Down -> Zoom");
 }
 
 void	display_instructions(t_mlx_data *data)
@@ -68,19 +56,19 @@ void	display_instructions(t_mlx_data *data)
 		0xFFFFFF, "Instructions:");
 	y += 15;
 	mlx_string_put(data->mlx_ptr, data->win_ptr, 18, y,
-		0xFFFFFF, "R -> Toggle rotate");
+		0xFFFFFF, "C -> Change color");
 	y += 15;
 	mlx_string_put(data->mlx_ptr, data->win_ptr, 18, y,
-		0xFFFFFF, "C -> Change color");
+		0xFFFFFF, "R -> Toggle rotate");
+	translate_instructions(data, &y);
+	zoom_scale_instructions(data, &y);
+	rotate_instructions(data, &y);
 	y += 15;
 	mlx_string_put(data->mlx_ptr, data->win_ptr, 18, y,
 		0xFFFFFF, "P -> Parallel projection");
 	y += 15;
 	mlx_string_put(data->mlx_ptr, data->win_ptr, 18, y,
 		0xFFFFFF, "I -> Isometric projection");
-	rotate_instructions(data, &y);
-	translate_instructions(data, &y);
-	zoom_scale_instructions(data, &y);
 	y += 15;
 	mlx_string_put(data->mlx_ptr, data->win_ptr, 18, y,
 		0xFFFFFF, "Esc -> Exit");

@@ -26,8 +26,8 @@
 # include "../ft_printf/includes/libft.h"
 # include "../ft_printf/includes/ft_printf.h"
 
-# define HEIGHT 950
-# define WIDTH 1000
+# define HEIGHT 700
+# define WIDTH 860
 # define MOUSE_SCROLL_UP 4
 # define MOUSE_SCROLL_DOWN 5
 # define GRID_SIZE 20
