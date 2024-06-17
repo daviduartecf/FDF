@@ -10,6 +10,10 @@ The program allows for the visualization of landscapes from 2D representation in
 The [Bresenham algorithm](https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm) is employed for line drawing, and [rotation matrices](https://en.wikipedia.org/wiki/Rotation_matrix) are applied to handle rotations.
 
 <p align="center">
+  <img src="images/video.gif" alt="Example GIF">
+</p>
+
+<p align="center">
   <img src="images/julia.png" alt="Julia Model">
 </p>
 
